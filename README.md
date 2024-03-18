@@ -12,49 +12,72 @@ To install and run the Image Processing API locally, follow these steps:
    git clone https://github.com/your-username/image-processing-api.git
 
 2. Install dependency :
+   ```bash
    cd image-processing-api
    npm install
 
-3. Start the server :
+4. Start the server :
+   ```bash
    npm start
 
 ## Usage
 To use the Image Processing API, make HTTP requests to the following endpoints:
 
-/convertToJPEG: Convert image files from PNG to JPEG.
-/resize: Resize images according to specified dimensions.
-/compress: Compress images to reduce file size while maintaining reasonable quality.
+/convertToJPEG : Convert image files from PNG to JPEG.
+
+/resize : Resize images according to specified dimensions.
+
+/compress : Compress images to reduce file size while maintaining reasonable quality.
 
 ## Endpoints
-Convert to JPEG
-Endpoint: /convertToJPEG
+### Convert to JPEG
 
-Method: POST
+Endpoint: `/convertToJPEG`
+
+Method: `POST`
+
 Parameters:
-inputFile: Image file to be converted (multipart/form-data).
+
+`inputFile`: Image file to be converted (multipart/form-data).
+
 Response:
+
 Status Code: 200 OK
+
 Body: "Image converted to JPEG successfully."
 
-Resize
-Endpoint: /resize
+### Resize
+Endpoint: `/resize`
 
-Method: POST
+Method: `POST`
+
 Parameters:
-inputFile: Image file to be resized (multipart/form-data).
-width: Width of the resized image.
-height: Height of the resized image.
+
+`inputFile`: Image file to be resized (multipart/form-data).
+
+`width`: Width of the resized image.
+
+`height`: Height of the resized image.
+   
 Response:
+
 Status Code: 200 OK
+
 Body: "Image resized successfully."
 
-Compress
-Endpoint: /compress
+### Compress
+Endpoint: `/compress`
 
-Method: POST
+Method: `POST`
+
 Parameters:
-inputFile: Image file to be compressed (multipart/form-data).
-quality: Compression quality (0-100).
+
+`inputFile`: Image file to be compressed (multipart/form-data).
+
+`quality`: Compression quality (0-100).
+
 Response:
+
 Status Code: 200 OK
+
 Body: "Image compressed successfully."
