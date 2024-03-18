@@ -1,5 +1,6 @@
 const express = require("express");
-const Jimp = require("jimp");
+const { cv } = require("opencv4nodejs");
+const ffmpeg = require("ffmpeg");
 const multer = require("multer");
 const path = require("path");
 
@@ -42,12 +43,12 @@ app.post("/convertToJPEG", upload.single("inputFile"), async (req, res) => {
     if (!filePath) {
       return res.status(400).send("Uploaded file not found.");
     }
-    const image = await Jimp.read(filePath);
+    const img = cv.imread(filePath);
     const outputPath = path.join(
       outputConvert,
       `${req.file.originalname.split(".")[0]}.jpeg`
     );
-    await image.quality(100).writeAsync(outputPath);
+    cv.imwrite(outputPath, img);
     res.status(200).send("Image converted to JPEG successfully.");
   } catch (err) {
     console.error(err);
@@ -62,16 +63,14 @@ app.post("/resize", upload.single("inputFile"), async (req, res) => {
       return res.status(400).send("Uploaded file not found.");
     }
     const { width, height } = req.body;
-    const image = await Jimp.read(filePath);
+    const img = cv.imread(filePath);
     const newFilename =
       req.file.originalname.replace(/\.[^/.]+$/, "") + "_resized";
     const outputPath = path.join(
       outputResize,
       newFilename + path.extname(req.file.originalname)
     );
-    await image
-      .resize(parseInt(width), parseInt(height))
-      .writeAsync(outputPath);
+    cv.imwrite(outputPath, img.resize(parseInt(width), parseInt(height)));
     res.status(200).send("Image resized successfully.");
   } catch (err) {
     console.error(err);
@@ -86,14 +85,14 @@ app.post("/compress", upload.single("inputFile"), async (req, res) => {
       return res.status(400).send("Uploaded file not found.");
     }
     const { quality } = req.body;
-    const image = await Jimp.read(filePath);
+    const img = cv.imread(filePath);
     const newFilename =
       req.file.originalname.replace(/\.[^/.]+$/, "") + "_compressed";
     const outputPath = path.join(
       outputCompress,
       newFilename + path.extname(req.file.originalname)
     );
-    await image.quality(parseInt(quality)).writeAsync(outputPath);
+    cv.imwrite(outputPath, img, [cv.IMWRITE_JPEG_QUALITY, parseInt(quality)]);
     res.status(200).send("Image compressed successfully.");
   } catch (err) {
     console.error(err);
